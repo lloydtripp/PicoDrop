@@ -68,14 +68,14 @@
 
   <script>
     var sampleCount = 0;
-    var blanked = False;
+    var blanked = false;
 
     function generateNumber() {
 
         // Keep track of sample numberfor each measure.
         sampleCount++;
 
-        if (blanked == False) {
+        if (blanked == false) {
             // set randomConcentration to a random number between -20.0 and 1.0
             var randomConcentration = (Math.random() * (1.0 + 20.0) - 20.0).toFixed(2);
             // set randomA260A280 to a random number between -0.5 and 0.5
@@ -130,7 +130,7 @@
     }
 
     function blank() {
-        var blanked = True;
+        var blanked = true;
     }
 
   </script>
