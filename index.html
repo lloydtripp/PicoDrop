@@ -3,6 +3,16 @@
 <head>
   <title>Random Number Generator</title>
   <style>
+    .title-intro {
+    /* Center */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+
+    }
     .container {
       display: flex;
       flex-direction: column;
@@ -31,19 +41,18 @@
   </style>
 </head>
 <body>
-    <div class="container">
+    <div class="title-intro">
         <h1>PicoDrop™</h1>
         <p><i>Digitally measure DNA concentration and quality with equivalent reproducibility as a spectrophotometer!</i></p> 
     </div>
     <div class="container-wrapper">
         </div class="container" id="Individual Sample">
-            <button onclick="generateNumber()">Generate</button>
             <p id="concentration"></p>
             <p id="A260/A280"></p>
             <p id="A260/A230"></p>
             <h1>Random Number Generator</h1>
             <button onclick="blank()">Blank with H2O</button>
-            <button onclick="generateNumber()">Generate</button>
+            <button onclick="generateNumber()">Measure</button>
             <button onclick="resetTable()">Reset</button>
         </div>
         <div class="container">
