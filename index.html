@@ -23,8 +23,8 @@
     }
 
     .container-wrapper {
-    display: flex;
-    justify-content: space-between;
+        display: flex;
+        justify-content: space-between;
     }   
 
     #number {
@@ -45,16 +45,17 @@
         <p><i>Digitally measure DNA concentration and quality with equivalent reproducibility as a spectrophotometer!</i></p> 
     </div>
     <div class="container-wrapper">
-        </div class="container" id="Individual Sample">
-            <p id="concentration"></p>
-            <p id="A260/A280"></p>
-            <p id="A260/A230"></p>
-            <h1>Random Number Generator</h1>
+        <div class="container" id="Individual Sample">
+            <h2>Samples</h2>
             <button onclick="blank()">Blank with H2O</button>
             <button onclick="generateNumber()">Measure</button>
             <button onclick="resetTable()">Reset</button>
+            <p id="concentration"></p>
+            <p id="A260/A280"></p>
+            <p id="A260/A230"></p>
         </div>
-        <div class="container">
+        <div class="container" id="sampleTableContainer">
+            <h2>Sample Table</h2>
             <table id="samplesTable">
                 <tr>
                     <th>#</th>
