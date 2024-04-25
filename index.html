@@ -9,8 +9,14 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      width: 45%;
       font-family: Arial, sans-serif;
     }
+
+    .container-wrapper {
+    display: flex;
+    justify-content: space-between;
+    }   
 
     #number {
       font-size: 24px;
@@ -26,44 +32,71 @@
 </head>
 <body>
     <div class="container">
-        <h1>Random Number Generator</h1>
-        <button onclick="generateNumber()">Generate</button>
-        <p id="concentration"></p>
-        <p id="A260/A280"></p>
-        <p id="A260/A230"></p>
+        <h1>PicoDrop™</h1>
+        <p><i>Digitally measure DNA concentration and quality with equivalent reproducibility as a spectrophotometer!</i></p> 
     </div>
-    <div class="container">
-        <h1>Random Number Generator</h1>
-        <button onclick="generateNumber()">Generate</button>
-        <button onclick="resetTable()">Reset</button>
-        <table id="samplesTable">
-            <tr>
-                <th>#</th>
-                <th>ng/uL</th>
-                <th>A260/A280</th>
-                <th>A260/A230</th>
-            </tr>
-        </table>
+    <div class="container-wrapper">
+        </div class="container" id="Individual Sample">
+            <button onclick="generateNumber()">Generate</button>
+            <p id="concentration"></p>
+            <p id="A260/A280"></p>
+            <p id="A260/A230"></p>
+            <h1>Random Number Generator</h1>
+            <button onclick="blank()">Blank with H2O</button>
+            <button onclick="generateNumber()">Generate</button>
+            <button onclick="resetTable()">Reset</button>
+        </div>
+        <div class="container">
+            <table id="samplesTable">
+                <tr>
+                    <th>#</th>
+                    <th>ng/uL</th>
+                    <th>A260/A280</th>
+                    <th>A260/A230</th>
+                </tr>
+            </table>
+        </div>
     </div>
 
   <script>
     var sampleCount = 0;
+    var blanked = False;
 
     function generateNumber() {
-        sampleCount++;
-        var randomConcentration = Math.floor(Math.random() * 101); // Generates a random number from 0 to 100
-        if (Math.random() < 0.9) {
-            var randomA260A280 = (Math.random() * (2. - 1.8) + 1.8).toFixed(2);
-        } else {
-            var randomA260A280 = (Math.random() * 0.5).toFixed(2);
-        }
-        // set randomA260A230 to a random number between 2.0 and 2.2 90% of the time and between 0.0 and 1.0 10% of the time
-        if (Math.random() < 0.9) {
-            var randomA260A230 = (Math.random() * (2.2 - 2.0) + 2.0).toFixed(2);
-        } else {
-            var randomA260A230 = (Math.random() * 1.0).toFixed(2);
-        }
 
+        // Keep track of sample numberfor each measure.
+        sampleCount++;
+
+        if (blanked == False) {
+            // set randomConcentration to a random number between -20.0 and 1.0
+            var randomConcentration = (Math.random() * (1.0 + 20.0) - 20.0).toFixed(2);
+            // set randomA260A280 to a random number between -0.5 and 0.5
+            var randomA260A280 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
+            // set randomA260A230 to a random number between -0.5 and 0.5
+            var randomA260A230 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
+        }
+        else {
+            var randomConcentration = (Math.random() * 101,3).toFixed(2); // Generates a random number from 0 to 100
+            if (Math.random() < 0.9) {
+                var randomA260A280 = (Math.random() * (2. - 1.8) + 1.8).toFixed(2);
+            } else {
+                var randomA260A280 = (Math.random() * 0.5).toFixed(2);
+            }
+            // set randomA260A230 to a random number between 2.0 and 2.2 90% of the time and between 0.0 and 1.0 10% of the time
+            if (Math.random() < 0.9) {
+                var randomA260A230 = (Math.random() * (2.2 - 2.0) + 2.0).toFixed(2);
+            } else {
+                var randomA260A230 = (Math.random() * 1.0).toFixed(2);
+            }
+        }
+        
+        
+        // Report the values of the current sample
+        document.getElementById("concentration").textContent = "Generated Number: " + randomConcentration + " ng/uL";
+        document.getElementById("A260/A280").textContent = "A260/A280: " + randomA260A280;
+        document.getElementById("A260/A230").textContent = "A260/A230: " + randomA260A230;
+
+        // Add current sample to the table.
         var table = document.getElementById("samplesTable");
         var row = table.insertRow(-1);
         var cell1 = row.insertCell(0);
@@ -76,11 +109,7 @@
         cell3.innerHTML = randomA260A280;
         cell4.innerHTML = randomA260A230;
 
-        document.getElementById("A260/A280").textContent = "A260/A280: " + randomA260A280;
-        var randomA260A230 = Math.floor(Math.random() * 101); // Generates a random number from 0 to 100
-        document.getElementById("concentration").textContent = "Generated Number: " + randomConcentration + " ng/uL";
-        document.getElementById("A260/A280").textContent = "A260/A280: " + randomA260A280;
-        document.getElementById("A260/A230").textContent = "A260/A230: " + randomA260A230;
+        
     }
 
     function resetTable() {
@@ -91,6 +120,11 @@
         }
         sampleCount = 0;
     }
+
+    function blank() {
+        var blanked = True;
+    }
+
   </script>
 </body>
 </html>
