@@ -19,16 +19,34 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Random Number Generator</h1>
-    <button onclick="generateNumber()">Generate</button>
-    <p id="number"></p>
-  </div>
+    <div class="container">
+        <h1>Random Number Generator</h1>
+        <button onclick="generateNumber()">Generate</button>
+        <p id="concentration"></p>
+        <p id="A260/A280"></p>
+        <p id="A260/A230"></p>
+    </div>
 
   <script>
     function generateNumber() {
-      var randomNumber = Math.floor(Math.random() * 101); // Generates a random number from 0 to 100
-      document.getElementById("number").textContent = "Generated Number: " + randomNumber;
+        var randomConcentration = Math.floor(Math.random() * 101); // Generates a random number from 0 to 100
+        if (Math.random() < 0.9) {
+            var randomA260A280 = (Math.random() * (2. - 1.8) + 1.8).toFixed(2);
+        } else {
+            var randomA260A280 = (Math.random() * 0.5).toFixed(2);
+        }
+        // set randomA260A230 to a random number between 2.0 and 2.2 90% of the time and between 0.0 and 1.0 10% of the time
+        if (Math.random() < 0.9) {
+            var randomA260A230 = (Math.random() * (2.2 - 2.0) + 2.0).toFixed(2);
+        } else {
+            var randomA260A230 = (Math.random() * 1.0).toFixed(2);
+        }
+
+        document.getElementById("A260/A280").textContent = "A260/A280: " + randomA260A280;
+        var randomA260A230 = Math.floor(Math.random() * 101); // Generates a random number from 0 to 100
+        document.getElementById("concentration").textContent = "Generated Number: " + randomConcentration + " ng/uL";
+        document.getElementById("A260/A280").textContent = "A260/A280: " + randomA260A280;
+        document.getElementById("A260/A230").textContent = "A260/A230: " + randomA260A230;
     }
   </script>
 </body>
