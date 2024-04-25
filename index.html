@@ -16,6 +16,12 @@
       font-size: 24px;
       margin-bottom: 20px;
     }
+
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 5px;
+    }
   </style>
 </head>
 <body>
@@ -26,9 +32,25 @@
         <p id="A260/A280"></p>
         <p id="A260/A230"></p>
     </div>
+    <div class="container">
+        <h1>Random Number Generator</h1>
+        <button onclick="generateNumber()">Generate</button>
+        <button onclick="resetTable()">Reset</button>
+        <table id="samplesTable">
+            <tr>
+                <th>#</th>
+                <th>ng/uL</th>
+                <th>A260/A280</th>
+                <th>A260/A230</th>
+            </tr>
+        </table>
+    </div>
 
   <script>
+    var sampleCount = 0;
+
     function generateNumber() {
+        sampleCount++;
         var randomConcentration = Math.floor(Math.random() * 101); // Generates a random number from 0 to 100
         if (Math.random() < 0.9) {
             var randomA260A280 = (Math.random() * (2. - 1.8) + 1.8).toFixed(2);
@@ -42,11 +64,32 @@
             var randomA260A230 = (Math.random() * 1.0).toFixed(2);
         }
 
+        var table = document.getElementById("samplesTable");
+        var row = table.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+
+        cell1.innerHTML = sampleCount;
+        cell2.innerHTML = randomConcentration;
+        cell3.innerHTML = randomA260A280;
+        cell4.innerHTML = randomA260A230;
+
         document.getElementById("A260/A280").textContent = "A260/A280: " + randomA260A280;
         var randomA260A230 = Math.floor(Math.random() * 101); // Generates a random number from 0 to 100
         document.getElementById("concentration").textContent = "Generated Number: " + randomConcentration + " ng/uL";
         document.getElementById("A260/A280").textContent = "A260/A280: " + randomA260A280;
         document.getElementById("A260/A230").textContent = "A260/A230: " + randomA260A230;
+    }
+
+    function resetTable() {
+        var table = document.getElementById("samplesTable");
+        var rowCount = table.rows.length;
+        for (var i = rowCount - 1; i > 0; i--) {
+            table.deleteRow(i);
+        }
+        sampleCount = 0;
     }
   </script>
 </body>
