@@ -90,6 +90,12 @@
     var sampleCount = 0;
     var blanked = false;
 
+    absorbanceSpectraElement = document.getElementById('absorbanceSpectraPlot');
+	Plotly.newPlot( absorbanceSpectraElement, [{
+	x: [1, 2, 3, 4, 5],
+	y: [1, 2, 4, 8, 16] }], {
+	margin: { t: 0 } } );
+
     // Function definitions
 
     // Generate sample values (concentration, A260/A280, A260/A230)
