@@ -4,6 +4,16 @@
   <title>PicoDrop™</title>
   <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
   <style>
+     .button {
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 5px 5px;
+      cursor: pointer;
+    }
+    
     .title-intro {
     display: flex;
     flex-direction: column;
@@ -14,15 +24,7 @@
 
     }
 
-    .button {
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 10px 5px;
-      cursor: pointer;
-    }
+   
     
     .container {
       display: flex;
@@ -89,6 +91,11 @@
     var blanked = false;
     var pathLength = 10.0; // mm
     var AbsorbanceToConcentrationFactor = 500 ; // ng/uL per A260 * pathLength
+    var Concentration = 0.0;
+    var A260A280 = 0.0;
+    var A260A230 = 0.0;
+    var backgroundSignal = 0.0;
+    
 
     // Initialize the absorbance spectra plot.
     absorbanceSpectraPlotElement = document.getElementById('absorbanceSpectraPlot');
@@ -117,31 +124,31 @@
         sampleCount++;
 
         if (blanked == false) {
-            // set randomConcentration to a random number between -20.0 and 1.0
-            var Concentration = (Math.random() * (1.0 + 20.0) - 20.0).toFixed(2);
+            // set Concentration to a random number between -20.0 and 1.0
+            Concentration = (Math.random() * (1.0 + 20.0) - 20.0).toFixed(2);
             // set randomA260A280 to a random number between -0.5 and 0.5
-            var A260A280 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
+            A260A280 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
             // set randomA260A230 to a random number between -0.5 and 0.5
-            var A260A230 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
+            A260A230 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
             // set background signal to a random number between -4.5 and 5
-            var backgroundSignal = (Math.random() * (5.0 + 4.5) - 4.5).toFixed(2);
+            backgroundSignal = (Math.random() * (5.0 + 4.5) - 4.5).toFixed(2);
 
         }
         else {
-            var Concentration = (Math.random() * 101,3).toFixed(2); // Generates a random number from 0 to 100
+            Concentration = (Math.random() * 101 + 3).toFixed(2); // Generates a random number from 0 to 100
             if (Math.random() < 0.9) {
-                var A260A280 = (Math.random() * (2. - 1.8) + 1.8).toFixed(2);
+                A260A280 = (Math.random() * (2. - 1.8) + 1.8).toFixed(2);
             } else {
-                var A260A280 = (Math.random() * 0.5).toFixed(2);
+                A260A280 = (Math.random() * 0.5).toFixed(2);
             }
             // set randomA260A230 to a random number between 2.0 and 2.2 90% of the time and between 0.0 and 1.0 10% of the time
             if (Math.random() < 0.9) {
-                var A260A230 = (Math.random() * (2.2 - 2.0) + 2.0).toFixed(2);
+                A260A230 = (Math.random() * (2.2 - 2.0) + 2.0).toFixed(2);
             } else {
-                var A260A230 = (Math.random() * 1.0).toFixed(2);
+                A260A230 = (Math.random() * 1.0).toFixed(2);
             }
             // set background signal to a random number between -0.1 and 0.1
-            var backgroundSignal = (Math.random() * (0.1 + 0.1) - 0.1).toFixed(2);
+            backgroundSignal = (Math.random() * (0.1 + 0.1) - 0.1).toFixed(2);
         }
         
         // Report the values of the current sample
