@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>PicoDrop™</title>
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
   <style>
     .title-intro {
     display: flex;
@@ -59,15 +60,21 @@
         <div class="container" id="Individual Sample">
             <h2>Samples</h2>
             <button onclick="blank()">Blank with H2O</button>
-            <button onclick="generateNumber()">Measure</button>
-            <button onclick="resetTable()">Reset</button>
+            <button onclick="generateSample()">Measure</button>
+
             <p id="concentration"></p>
             <p id="A260/A280"></p>
             <p id="A260/A230"></p>
         </div>
+        <div class="container" id="AbsorbanceSpectra">
+            <h2>Absorbance Spectra</h2>
+            <!-- -->
+            <div id="absorbanceSpectraPlot" style="width:600px;height:250px;"></div>
+        </div>
         <div class="container" id="sampleTableContainer">
             <h2>Sample Table</h2>
             <table id="samplesTable">
+                <button onclick="clearTable()">Clear Table</button> 
                 <tr>
                     <th>#</th>
                     <th>ng/uL</th>
@@ -79,42 +86,46 @@
     </div>
 
   <script>
+    // Initializations for page.
     var sampleCount = 0;
     var blanked = false;
 
-    function generateNumber() {
+    // Function definitions
+
+    // Generate sample values (concentration, A260/A280, A260/A230)
+    function generateSample() {
 
         // Keep track of sample numberfor each measure.
         sampleCount++;
 
         if (blanked == false) {
             // set randomConcentration to a random number between -20.0 and 1.0
-            var randomConcentration = (Math.random() * (1.0 + 20.0) - 20.0).toFixed(2);
+            var Concentration = (Math.random() * (1.0 + 20.0) - 20.0).toFixed(2);
             // set randomA260A280 to a random number between -0.5 and 0.5
-            var randomA260A280 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
+            var A260A280 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
             // set randomA260A230 to a random number between -0.5 and 0.5
-            var randomA260A230 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
+            var A260A230 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
         }
         else {
-            var randomConcentration = (Math.random() * 101,3).toFixed(2); // Generates a random number from 0 to 100
+            var Concentration = (Math.random() * 101,3).toFixed(2); // Generates a random number from 0 to 100
             if (Math.random() < 0.9) {
-                var randomA260A280 = (Math.random() * (2. - 1.8) + 1.8).toFixed(2);
+                var A260A280 = (Math.random() * (2. - 1.8) + 1.8).toFixed(2);
             } else {
-                var randomA260A280 = (Math.random() * 0.5).toFixed(2);
+                var A260A280 = (Math.random() * 0.5).toFixed(2);
             }
             // set randomA260A230 to a random number between 2.0 and 2.2 90% of the time and between 0.0 and 1.0 10% of the time
             if (Math.random() < 0.9) {
-                var randomA260A230 = (Math.random() * (2.2 - 2.0) + 2.0).toFixed(2);
+                var A260A230 = (Math.random() * (2.2 - 2.0) + 2.0).toFixed(2);
             } else {
-                var randomA260A230 = (Math.random() * 1.0).toFixed(2);
+                var A260A230 = (Math.random() * 1.0).toFixed(2);
             }
         }
         
         
         // Report the values of the current sample
-        document.getElementById("concentration").textContent = "Generated Number: " + randomConcentration + " ng/uL";
-        document.getElementById("A260/A280").textContent = "A260/A280: " + randomA260A280;
-        document.getElementById("A260/A230").textContent = "A260/A230: " + randomA260A230;
+        document.getElementById("concentration").textContent = "Generated Number: " + Concentration + " ng/uL";
+        document.getElementById("A260/A280").textContent = "A260/A280: " + A260A280;
+        document.getElementById("A260/A230").textContent = "A260/A230: " + A260A230;
 
         // Add current sample to the table.
         var table = document.getElementById("samplesTable");
@@ -125,25 +136,31 @@
         var cell4 = row.insertCell(3);
 
         cell1.innerHTML = sampleCount;
-        cell2.innerHTML = randomConcentration;
-        cell3.innerHTML = randomA260A280;
-        cell4.innerHTML = randomA260A230;
-
-        
+        cell2.innerHTML = Concentration;
+        cell3.innerHTML = A260A280;
+        cell4.innerHTML = A260A230;
+   
     }
 
-    function resetTable() {
+    // Clears the samples in the table. 
+    function clearTable() {
         var table = document.getElementById("samplesTable");
         var rowCount = table.rows.length;
         for (var i = rowCount - 1; i > 0; i--) {
             table.deleteRow(i);
         }
         sampleCount = 0;
-        blanked = false;
+
     }
 
+    // Blanks the digital spectrophotometer with H2O.
     function blank() {
         blanked = true;
+
+        // Reset the measures.
+        document.getElementById("concentration").textContent = "";
+        document.getElementById("A260/A280").textContent = "";
+        document.getElementById("A260/A230").textContent = "";
     }
 
   </script>
