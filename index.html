@@ -95,7 +95,7 @@
     var A260A280 = 0.0;
     var A260A230 = 0.0;
     var backgroundSignal = 0.0;
-    
+
 
     // Initialize the absorbance spectra plot.
     absorbanceSpectraPlotElement = document.getElementById('absorbanceSpectraPlot');
@@ -190,11 +190,19 @@
             x: x,
             y: y,
             mode: 'lines',
-            name: 'Sample ',// + sampleCount,
+            name: 'Sample ' + sampleCount,
             line: {shape: 'spline'}
         };
 
         Plotly.addTraces(absorbanceSpectraPlotElement, trace);
+
+        // Set y axis range to be the maximum of points within the range of 220 to 350 nm
+        var yMax = Math.max.apply(null, y.filter(function (value, index) {
+            return x[index] >= 220 && x[index] <= 350;
+        }));
+        Plotly.relayout(absorbanceSpectraPlotElement, {yaxis: {range: [0, yMax * 1.1 ]}});
+
+
     }
 
     // Clears the samples in the table. 
