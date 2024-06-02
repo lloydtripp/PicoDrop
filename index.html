@@ -144,14 +144,12 @@
             var backgroundSignal = (Math.random() * (0.1 + 0.1) - 0.1).toFixed(2);
         }
         
-        
         // Report the values of the current sample
         document.getElementById("concentration").textContent = "Generated Number: " + Concentration + " ng/uL";
         document.getElementById("A260/A280").textContent = "A260/A280: " + A260A280;
         document.getElementById("A260/A230").textContent = "A260/A230: " + A260A230;
 
-        // Plot the absorbance spectrum of the current sample
-        addAbsorbanceSpectrum();
+        
         
         // Add current sample to the table.
         var table = document.getElementById("samplesTable");
@@ -165,6 +163,9 @@
         cell2.innerHTML = Concentration;
         cell3.innerHTML = A260A280;
         cell4.innerHTML = A260A230;
+
+        // Plot the absorbance spectrum of the current sample
+        addAbsorbanceSpectrum();
    
     }
 
@@ -182,7 +183,7 @@
             x: x,
             y: y,
             mode: 'lines',
-            name: 'Sample ' + sampleCount,
+            name: 'Sample ',// + sampleCount,
             line: {shape: 'spline'}
         };
 
