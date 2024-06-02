@@ -68,7 +68,6 @@
         </div>
         <div class="container" id="AbsorbanceSpectra">
             <h2>Absorbance Spectra</h2>
-            <!-- -->
             <div id="absorbanceSpectraPlot" style="width:600px;height:250px;"></div>
         </div>
         <div class="container" id="sampleTableContainer">
@@ -89,12 +88,26 @@
     // Initializations for page.
     var sampleCount = 0;
     var blanked = false;
+    var pathLength = 10.0; // mm
+    var AbsorbanceToConcentrationFactor = 500 ; // ng/uL per A260 * pathLength
 
-    absorbanceSpectraElement = document.getElementById('absorbanceSpectraPlot');
-	Plotly.newPlot( absorbanceSpectraElement, [{
-	x: [1, 2, 3, 4, 5],
-	y: [1, 2, 4, 8, 16] }], {
-	margin: { t: 0 } } );
+    // Initialize the absorbance spectra plot.
+    absorbanceSpectraPlotElement = document.getElementById('absorbanceSpectraPlot');
+	Plotly.newPlot( absorbanceSpectraPlotElement, [{
+	    x: [],
+	    y: [] }], 
+        {margin: { t: 0 },
+        xaxis: {
+            title: "Wavelength (nm)",
+            range: [220, 350]
+
+            },
+        yaxis: {
+            title: "10mm Absorbance"
+            }     
+        } 
+    
+    );
 
     // Function definitions
 
@@ -111,6 +124,9 @@
             var A260A280 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
             // set randomA260A230 to a random number between -0.5 and 0.5
             var A260A230 = (Math.random() * (0.5 + 0.5) - 0.5).toFixed(2);
+            // set background signal to a random number between -4.5 and 5
+            var backgroundSignal = (Math.random() * (5.0 + 4.5) - 4.5).toFixed(2);
+
         }
         else {
             var Concentration = (Math.random() * 101,3).toFixed(2); // Generates a random number from 0 to 100
@@ -125,6 +141,8 @@
             } else {
                 var A260A230 = (Math.random() * 1.0).toFixed(2);
             }
+            // set background signal to a random number between -0.1 and 0.1
+            var backgroundSignal = (Math.random() * (0.1 + 0.1) - 0.1).toFixed(2);
         }
         
         
@@ -146,6 +164,27 @@
         cell3.innerHTML = A260A280;
         cell4.innerHTML = A260A230;
    
+    }
+
+    // Add the sample's absorbance spectrum to the absorbanceSpectraPlotElement, by fitting a spline function to anchor points.
+    function addAbsorbanceSpectrum() {
+        // Calculate anchor points
+        var A260 = Concentration * pathLength / AbsorbanceToConcentrationFactor;
+        var A280 = A260 / A260A280;
+        var A230 = A260 / A260A230;
+
+        var x = [200, 230, 260, 280, 320, 350, 370];
+        var y = [30, A230, A260, A280, backgroundSignal, backgroundSignal, backgroundSignal];
+
+        var trace = {
+            x: x,
+            y: y,
+            mode: 'lines',
+            name: 'Sample ' + sampleCount,
+            line: {shape: 'spline'}
+        };
+
+        Plotly.addTraces(absorbanceSpectraPlotElement, trace);
     }
 
     // Clears the samples in the table. 
