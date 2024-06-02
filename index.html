@@ -14,9 +14,9 @@
 
     }
 
-    /* Class for button with padding all around */
     .button {
       padding: 15px 32px;
+      border: 5px none black;
       text-align: center;
       text-decoration: none;
       display: inline-block;
@@ -151,6 +151,9 @@
         document.getElementById("A260/A280").textContent = "A260/A280: " + A260A280;
         document.getElementById("A260/A230").textContent = "A260/A230: " + A260A230;
 
+        // Plot the absorbance spectrum of the current sample
+        addAbsorbanceSpectrum();
+        
         // Add current sample to the table.
         var table = document.getElementById("samplesTable");
         var row = table.insertRow(-1);
