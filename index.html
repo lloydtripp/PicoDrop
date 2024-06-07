@@ -196,11 +196,20 @@
 
         Plotly.addTraces(absorbanceSpectraPlotElement, trace);
 
-        // Set y axis range to be the maximum of points within the range of 220 to 350 nm
-        var yMax = Math.max.apply(null, y.filter(function (value, index) {
-            return x[index] >= 220 && x[index] <= 350;
-        }));
-        Plotly.relayout(absorbanceSpectraPlotElement, {yaxis: {range: [0, yMax * 1.1 ]}});
+        // Set y axis range to be the maximum of points within the range of 220 to 350 nm for all the traces.
+        var yMax = 0;
+        Plotly.Plots.resize(absorbanceSpectraPlotElement);
+        absorbanceSpectraPlotElement.data.forEach(function(trace) {
+            for (var i = 0; i < trace.x.length; i++) {
+                if (trace.x[i] >= 220 && trace.x[i] <= 350) {
+                    yMax = Math.max(yMax, trace.y[i]);
+                }
+            }
+        });
+        yMaxBuffer = 1.1;
+        Plotly.relayout(absorbanceSpectraPlotElement, {yaxis: {range: [0, yMax * yMaxBuffer]}});
+
+
 
 
     }
@@ -213,6 +222,9 @@
             table.deleteRow(i);
         }
         sampleCount = 0;
+
+        // Remove every trace on the absorbance spectra plot.
+        Plotly.deleteTraces(absorbanceSpectraPlotElement, [...Array(absorbanceSpectraPlotElement.data.length).keys()]);
 
     }
 
