@@ -183,8 +183,10 @@
         addAbsorbanceSpectrum();
         
         // Reset the blanked flag to false with a probability of 1/8.
-        if (blanked == true):
+        if (blanked == true){
             blanked = Math.random() < 1/8 ? false : true;
+            
+        }
     }
 
     // Add the sample's absorbance spectrum to the absorbanceSpectraPlotElement, by fitting a spline function to anchor points.
